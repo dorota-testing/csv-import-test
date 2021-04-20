@@ -42,7 +42,7 @@ class ProductImportTest extends TestCase
         $this->assertTrue($objProduct->getPrice() == $arrProduct['Cost in GBP']);
         $this->assertTrue($objProduct->getDiscontinued() == $arrProduct['Discontinued']);
     }
-    
+
     /**
      * Test saving product object in the db and deleting
      */
@@ -71,5 +71,7 @@ class ProductImportTest extends TestCase
         $result = $objImportProduct->deleteProductById($product_id);
 
         $this->assertTrue($result == 1);
-    }    
+    }
+
+
 }
