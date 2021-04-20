@@ -1,10 +1,12 @@
 <?php
 namespace Tests;
+
 require_once __DIR__ . '/../bootstrap.php';
+
 use PHPUnit\Framework\TestCase;
 use Service\Container;
 
-class UserHandlerTest extends TestCase
+class ProductImportTest extends TestCase
 {
     public function makeContainer()
     {
@@ -26,8 +28,8 @@ class UserHandlerTest extends TestCase
     public function testSayHello()
     {
         $container = $this->makeContainer();
-        $userHandler = $container->getUserHandler();
-        $hello = $userHandler->sayHello();
+        $productImport = $container->getProductImport();
+        $hello = $productImport->sayHello();
 
         $this->assertEquals($hello, 'Hello'); 
     }

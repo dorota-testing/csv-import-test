@@ -10,9 +10,8 @@ class Database
 	private $password;
 	private $database_name;
 	private $dbh;
-	private $error;
+	public $error;
 	private $stmt;
-	private $arrConfig;
 
 	public function __construct($arrConfig)
 	{

@@ -4,7 +4,8 @@ class Container
 {
     private $configuration;
     private $database; //this is to start object Database
-    private $userHandler; //this is to start object userHandler
+    private $productImport; 
+    private $csvImport; 
 
     public function __construct(array $arrConfig)
     {
@@ -21,15 +22,26 @@ class Container
         }
         return $this->database;
     } 
-    
+
     /**
-     * @return UserHandler
+     * @return CsvImport
      */
-    public function getUserHandler()
+    public function getCsvImport()
     {
-        if ($this->userHandler === null) { //this prevents instantiation if already exists
-            $this->userHandler = new UserHandler($this->configuration, $this->getDatabase());
+        if ($this->csvImport === null) { //this prevents instantiation if already exists
+            $this->csvImport = new CsvImport();
         }
-        return $this->userHandler;
+        return $this->csvImport;
     } 
+
+    /**
+     * @return ProductImport
+     */
+    public function getProductImport()
+    {
+        if ($this->productImport === null) { //this prevents instantiation if already exists
+            $this->productImport = new ProductImport($this->configuration, $this->getDatabase(), $this->getCsvImport());
+        }
+        return $this->productImport;
+    }  
 }
