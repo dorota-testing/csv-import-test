@@ -72,6 +72,86 @@ class ProductImportTest extends TestCase
 
         $this->assertTrue($result == 1);
     }
+    /**
+     * This sets data for next test
+     */
+    public function getSingleProductData()
+    {
+        return [
+            [
+                '1',
+                [
+                    'status' => 'skipped_over',
+                    'comment' => ''
+                ],
+                [
+                    'Product Code' => 'T0001',
+                    'Product Name' => 'TV',
+                    'Product Description' => '32” Tv',
+                    'Stock' => '10',
+                    'Cost in GBP' => '1000.99',
+                    'Discontinued' => ''
+                ],
+            ],
+            [
+                '2',
+                [
+                    'status' => 'successful',
+                    'comment' => ''
+                ],
+                [
+                    'Product Code' => 'T0002',
+                    'Product Name' => 'Cd Player',
+                    'Product Description' => 'Nice CD player',
+                    'Stock' => '11',
+                    'Cost in GBP' => '50.12',
+                    'Discontinued' => 'yes'
+                ]
+            ],
+            [
+                '3',
+                [
+                    'status' => 'skipped_error',
+                    'comment' => '* csv file line 3, product code: T0011',
+                ],
+                [
+                    'Product Code' => 'T0011',
+                    'Product Name' => 'Misc Cables',
+                    'Product Description' => 'error in export',
+                    'Stock' => '',
+                    'Cost in GBP' => '',
+                    'Discontinued' => ''
+                ]
+            ],
+            [
+                '4',
+                [
+                    'status' => 'skipped_less',
+                    'comment' => '',
+                ],
+                [
+                    'Product Code' => 'T0022',
+                    'Product Name' => 'Lorem',
+                    'Product Description' => 'Lorem ipsum',
+                    'Stock' => '5',
+                    'Cost in GBP' => '4',
+                    'Discontinued' => ''
+                ]
+            ]
+        ];
+    }
 
+    /**
+     * @dataProvider getSingleProductData
+     */
+    public function testAnalyseProductArray(string $lineNo, array $report, array $product)
+    {
+
+        $container = $this->makeContainer();
+        $objImportProduct = $container->getProductImport();
+        $arrResult = $objImportProduct->analyseProductArray($product, $lineNo);
+
+        $this->assertSame($arrResult, $report);
+    }
 
 }
