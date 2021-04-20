@@ -42,4 +42,34 @@ class ProductImportTest extends TestCase
         $this->assertTrue($objProduct->getPrice() == $arrProduct['Cost in GBP']);
         $this->assertTrue($objProduct->getDiscontinued() == $arrProduct['Discontinued']);
     }
+    
+    /**
+     * Test saving product object in the db and deleting
+     */
+    public function testInsertAndDeleteProduct()
+    {
+        $container = $this->makeContainer();
+        $objImportProduct = $container->getProductImport();
+
+        $arrProduct = [
+            'Product Code' => 'X0001',
+            'Product Name' => 'TV',
+            'Product Description' => '32” Tv',
+            'Stock' => '10',
+            'Cost in GBP' => '399.99',
+            'Discontinued' => ''
+        ];
+        $objProduct = $objImportProduct->createProductFromData($arrProduct);
+
+        //get the id
+        $product_id = $objImportProduct->insertProduct($objProduct);
+
+        $this->assertTrue($product_id > 0 && is_numeric($product_id));
+
+        //delete product by id   
+
+        $result = $objImportProduct->deleteProductById($product_id);
+
+        $this->assertTrue($result == 1);
+    }    
 }
