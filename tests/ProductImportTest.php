@@ -24,13 +24,4 @@ class ProductImportTest extends TestCase
     {
         $this->assertTrue(true);
     }
-
-    public function testSayHello()
-    {
-        $container = $this->makeContainer();
-        $productImport = $container->getProductImport();
-        $hello = $productImport->sayHello();
-
-        $this->assertEquals($hello, 'Hello'); 
-    }
 }

@@ -18,9 +18,4 @@ class ProductImport
 		$this->csvImport = $objCsvImport;
 	}
 
-	public function sayHello()
-	{
-		return 'Hello';
-	}
-
 }

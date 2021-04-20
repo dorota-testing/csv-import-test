@@ -28,5 +28,20 @@ class DatabaseTest extends TestCase
         $this->assertTrue($database->error === null);
     }
 
+    /** 
+     * This tests product table connection
+     * @return void
+     */
+    public function testItReadsProductTable()
+    {
+        
+        $database = $this->makeDatabase();
+        $database->query('SELECT * FROM tbl_product_data ');
+        $result = $database->resultset();
 
+        //echo '<pre>';
+        //print_r($result);
+
+        $this->assertTrue(is_array($result));
+    }
 }
