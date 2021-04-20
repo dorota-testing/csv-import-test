@@ -81,5 +81,41 @@ class ProductImport
 		return $result;
 	}
 
-	
+	/** 
+	 * Returns array with result of analysis (report)
+	 * @param array $arrProduct - an array made of csv file line
+	 * @param int $lineNo - a csv file line number
+	 * @return array - array that has 2 keys: status (success/skipped_less/skipped_over/skipped_error), comment (only for error, details of failed product)
+	 */
+	public function analyseProductArray(array $arrProduct, int $lineNo)
+	{
+		// check if all necessary values are filled
+		$boolIsEmpty = false;
+		$n = 0;
+		foreach ($arrProduct as $data) {
+			$n++;
+			if ($n < 5 && $data == '') {
+				$boolIsEmpty = true;
+			}
+		}
+		// if empty, mark as skipped_error
+		if ($boolIsEmpty) {
+
+			return ['status' => 'skipped_error', 'comment' => '* csv file line ' . $lineNo . ', product code: ' . $arrProduct["Product Code"]];
+		} else {
+
+			// check if should be skipped because price less than 5 and stock less than 10
+			if (($arrProduct['Cost in GBP'] < 5) && ($arrProduct['Stock'] < 10)) {
+				return ['status' => 'skipped_less', 'comment' => ''];
+			}
+
+			// check if should be skipped because price over 1000
+			if ($arrProduct['Cost in GBP'] > 1000) {
+				return ['status' => 'skipped_over', 'comment' => ''];
+			}
+
+			//if none of above was the case the product is successful
+			return ['status' => 'successful', 'comment' => ''];
+		}
+	}
 }
