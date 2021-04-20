@@ -1,5 +1,5 @@
 ## Installation
-You need composer installed for this, and php either globally on your system or on local server such as xampp. Clone or download this repo on your machine (to a place where php runs). In terminal navigate to project folder and run:
+You need php and composer installed globally on your system for this. It was tested with PHP 7.4.4, no guarantees for earlier versions. Clone or download this repo on your machine. If zipped, unzip. In terminal navigate to project folder and run:
 ```
   composer install
 ```
@@ -25,6 +25,3 @@ In terminal navigate to this folder and run:
 ```
   vendor/bin/phpunit
 ``` 
-
-## View in browser
-Install on a server with php and open index.php in the browser. 
