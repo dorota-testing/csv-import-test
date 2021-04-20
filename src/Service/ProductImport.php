@@ -3,6 +3,7 @@
 namespace Service;
 
 use Model\Product;
+use Model\Report;
 
 class ProductImport
 {
