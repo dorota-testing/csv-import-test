@@ -24,9 +24,8 @@ CREATE TABLE tblProductData (
 
 -- Rename table to avoid issues with case sensitivity
 
-RENAME TABLE tblProductData TO tbl_product_data
+RENAME TABLE tblProductData TO tbl_product_data;
 
 -- Add missing columns
 
 ALTER TABLE tbl_product_data  ADD intStock INT(11) NOT NULL  AFTER strProductCode,  ADD decPrice DECIMAL(11,2) NOT NULL  AFTER intStock;
-
