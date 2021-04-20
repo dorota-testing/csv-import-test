@@ -1,0 +1,5 @@
+Product Code,Product Name,Product Description,Stock,Cost in GBP,Discontinued
+T0001,TV,32” Tv,10,1000.99,
+T0002,Cd Player,Nice CD player,11,50.12,yes
+T0003,VCR,Top notch VCR,9,4.33,yes
+T0011,Misc Cables,error in export
