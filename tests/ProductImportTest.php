@@ -154,4 +154,32 @@ class ProductImportTest extends TestCase
         $this->assertSame($arrResult, $report);
     }
 
+    /**
+     * This tests processing of whole array of products.
+     * @return void
+     */
+    public function testProcessImportFile()
+    {
+        $path_csv = 'tests/testFiles/productSample.csv';
+        $container = $this->makeContainer();
+        $objImportProduct = $container->getProductImport();
+        $result = $objImportProduct->processImportFile($path_csv);
+        $report = $result['report'];
+        $products = $result['products'];
+
+        // delete the products just inserted in the db
+        $database = $container->getDatabase();
+        foreach ($products as $prod) {
+            $database->query("DELETE FROM tbl_product_data WHERE strProductCode = :code");
+            $database->bind(':code', $prod->getCode());
+            $database->execute();
+        }
+        // check that valid object Report was returned
+        $this->assertTrue(is_numeric($report->getTotalItems()));
+        $this->assertTrue(is_numeric($report->getItemsSuccessful()));
+        $this->assertTrue(is_numeric($report->getItemsSkippedError()));
+        $this->assertTrue(is_numeric($report->getItemsSkippedOver()));
+        $this->assertTrue(is_numeric($report->getItemsSkippedLess()));
+        $this->assertTrue(is_numeric($report->getItemsDuplicate()));
+    }
 }
