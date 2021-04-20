@@ -119,4 +119,60 @@ class ProductImport
 			return ['status' => 'successful', 'comment' => ''];
 		}
 	}
+
+	/** 
+	 * processes the import file
+	 * @param string - path to the csv file (example: 'tests/testFiles/productSample.csv')
+	 * @return array - array with 2 keys: 'report' contains obj Report and 'products' contains array of product objects
+	 */
+	public function processImportFile(string $csv_path)
+	{
+		$arrProducts = [];
+		$arrImport = $this->csvImport->turn_csv_file_into_array($csv_path);
+		$objReport = new Report;
+		$objReport->setMode($this->arrConfig['mode']);
+
+		$arrPrCode = [];
+		//process import array
+		foreach ($arrImport as $n => $line) {
+			$objReport->incrementTotalItems();
+			$arrAnalysis = $this->analyseProductArray($line, $n + 2);
+
+			if ($arrAnalysis['status'] == 'successful') {
+				//check if duplicate product code
+				if(in_array($line['Product Code'], $arrPrCode)){
+					$objReport->incrementItemsDuplicate();
+
+				} else {
+					//product is successful
+					$arrPrCode[] = $line['Product Code'];
+					$objReport->incrementItemsSuccessful();
+					$arrProducts[] = $this->createProductFromData($line);
+				}
+			}
+
+			if ($arrAnalysis['status'] == 'skipped_less') {
+				$objReport->incrementItemsSkippedLess();
+			}
+
+			if ($arrAnalysis['status'] == 'skipped_over') {
+				$objReport->incrementItemsSkippedOver();
+			}
+
+			if ($arrAnalysis['status'] == 'skipped_error') {
+				$objReport->incrementItemsSkippedError();
+				$objReport->addErrorDetails($arrAnalysis['comment']);
+			}
+		}
+		//echo '<pre>';
+		//print_r($arrProducts);
+		// save in the db (if not test)
+		if ($this->arrConfig['mode'] != 'test') {
+			foreach ($arrProducts as $product) {
+				$this->insertProduct($product);
+			}
+		}
+
+		return ['report' => $objReport, 'products'=>$arrProducts];
+	}	
 }

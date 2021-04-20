@@ -9,9 +9,10 @@ use Service\Container;
 
 class ProductImportTest extends TestCase
 {
-    public function makeContainer()
+    public function makeContainer(bool $isTest = false)
     {
         $arrConfig = json_decode(file_get_contents('config.json'), true);
+        $arrConfig['mode'] =  ($isTest ? 'test' : '');
         $container = new Container($arrConfig);
         return $container;
     }
@@ -182,4 +183,5 @@ class ProductImportTest extends TestCase
         $this->assertTrue(is_numeric($report->getItemsSkippedLess()));
         $this->assertTrue(is_numeric($report->getItemsDuplicate()));
     }
+
 }

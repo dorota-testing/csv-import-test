@@ -7,6 +7,7 @@ spl_autoload_register(function ($className) {
 });
 
 $arrConfig = json_decode(file_get_contents('config.json'), true);
+$arrConfig['mode'] =  (isset($argv[1]) && $argv[1] == 'test' ? 'test' : '');
 
 /* echo '<pre>';
 print_r($arrConfig);
